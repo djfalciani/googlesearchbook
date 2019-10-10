@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
+import Card from "../components/Card";
 
 class Search extends Component {
   state = {
@@ -58,27 +59,32 @@ class Search extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1><strong>Google Book Search</strong></h1>
+              <p className="lead">Search for and Save Books of Interest</p>
             </Jumbotron>
-            <form>
-              <Input
-                value={this.state.title}
-                onChange={this.handleInputChange}
-                name="search"
-                placeholder="Title (required)"
-              />
-              <FormBtn
-                disabled={!(this.state.author && this.state.title)}
-                onClick={this.handleFormSubmit}
-              >
-                Submit Book
-              </FormBtn>
-            </form>
           </Col>
-          <Col size="md-6 sm-12">
-            <Jumbotron>
-              <h1>Books On My List</h1>
-            </Jumbotron>
-            {this.state.books.length ? (
+          <Col size="md-12">
+              <Card title="Book Search" icon="far fa-book">
+                  <form>
+                      <Input
+                        value={this.state.searchQuery}
+                        onChange={this.handleInputChange}
+                        name="searchQuery"
+                        placeholder="Search"
+                      />
+                      <FormBtn
+                        disabled={!(this.state.searchQuery)}
+                        onClick={this.handleFormSubmit}
+                      >
+                        Submit Book
+                      </FormBtn>
+                  </form>
+              </Card>
+          </Col>
+          <Col size="md-12">
+              <Card title="Search Results from Google">
+
+              </Card>
+            {/* {this.state.books.length ? (
               <List>
                 {this.state.books.map(book => (
                   <ListItem key={book._id}>
@@ -93,7 +99,7 @@ class Search extends Component {
               </List>
             ) : (
               <h3>No Results to Display</h3>
-            )}
+            )} */}
           </Col>
         </Row>
       </Container>

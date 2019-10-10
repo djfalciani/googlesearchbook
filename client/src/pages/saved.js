@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
+import Card from "../components/Card";
+
 
 class Saved extends Component {
 
@@ -17,10 +19,11 @@ class Saved extends Component {
                     <Col size="md-12">
                         <Jumbotron>
                         <h1><strong>Google Book Search</strong></h1>
+                        <p className="lead">Search for and Save Books of Interest</p>
                         </Jumbotron>
                     </Col>
                     <Col size="md-12">
-                        Place Saved Books Here
+                        <Card title="Saved Books" icon="book"/>
                     </Col>
                 </Row>
             </Container>
