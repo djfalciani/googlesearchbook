@@ -16,5 +16,11 @@ export default {
   // Saves a book to the database
   saveBook: function(bookData) {
     return axios.post("/api/books", bookData);
+  },
+  // Google Books API search...
+  getGoogleBooks: function(searchStr) {
+    let searchQuery = searchStr.replace(" ","%20");
+    return axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchQuery}`);
+
   }
 };
