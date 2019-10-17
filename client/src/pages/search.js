@@ -7,16 +7,24 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import Card from "../components/Card";
+import BookCard from "../components/BookCard";
 
 class Search extends Component {
   state = {
-    books: [],
-    searchQuery: ""
+    books: [
+      // {
+      //   id: "asd12323",
+      //   Title: "Test",
+      //   Author: "Author Test"
+      // }
+    ],
+    searchQuery: "",
+    cardMsg: "Search Results from Google"
   };
 
-//   componentDidMount() {
-//     // this.loadBooks();
-//   }
+  // componentDidMount() {
+  //   // this.loadBooks();
+  // }
 
 //   loadBooks = () => {
 //     API.getBooks()
@@ -32,6 +40,12 @@ class Search extends Component {
 //       .catch(err => console.log(err));
 //   };
 
+  getBooks = () => {
+    API.getGoogleBooks(this.state.searchQuery)
+      .then(res => this.setState({ books: res.data.items}))
+      .catch(() => this.setState({ books:[], cardMsg: "No Books Found. Try Again"}));
+  };
+
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -41,15 +55,17 @@ class Search extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveBook({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
-      })
-        .then(res => this.loadBooks())
-        .catch(err => console.log(err));
-    }
+    this.getBooks();
+    
+    // if (this.state.title && this.state.author) {
+    //   API.saveBook({
+    //     title: this.state.title,
+    //     author: this.state.author,
+    //     synopsis: this.state.synopsis
+    //   })
+    //     .then(res => this.loadBooks())
+    //     .catch(err => console.log(err));
+    // }
   };
 
   render() {
@@ -80,26 +96,39 @@ class Search extends Component {
                   </form>
               </Card>
           </Col>
+        </Row>
+        <Row>
           <Col size="md-12">
-              <Card title="Search Results from Google">
+              <Card 
+                title={this.state.cardMsg}>
 
+                {this.state.books.length ? (
+                  <List>
+                    {this.state.books.map(book => (
+                      <BookCard
+                        key       = {book.id}
+                        id        = {book.id}
+                        title     = {book.volumeInfo.title}
+                        authors   = {book.volumeInfo.authors}
+                        synopsis  = {book.volumeInfo.description}
+                        image     = {book.volumeInfo.imageLinks.thumbnail}
+                        link      = {book.volumeInfo.infoLink}
+                      >
+                      </BookCard>
+                      // <ListItem key={book.id}>
+                      //   <Link to={"/books/" + book.id}>
+                      //     <strong>
+                      //       {book.volumeInfo.title} by {book.volumeInfo.authors.join(", ")}
+                      //     </strong>
+                      //   </Link>
+                      //   <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                      // </ListItem>
+                    ))}
+                  </List>
+                ) : (
+                  <h3>No Results to Display</h3>
+                )}
               </Card>
-            {/* {this.state.books.length ? (
-              <List>
-                {this.state.books.map(book => (
-                  <ListItem key={book._id}>
-                    <Link to={"/books/" + book._id}>
-                      <strong>
-                        {book.title} by {book.author}
-                      </strong>
-                    </Link>
-                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-              <h3>No Results to Display</h3>
-            )} */}
           </Col>
         </Row>
       </Container>
