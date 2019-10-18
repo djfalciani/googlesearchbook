@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, Row } from "../Grid";
-// import "./style.css";
 
 function FriendCard(props) {
   return (
@@ -15,9 +14,9 @@ function FriendCard(props) {
           <a target="_blank" rel="noopener noreferrer" href={props.link} className="btn btn-light">View</a>
           <button 
             type="button" 
-            className="btn btn-primary"
-            onClick={() => props.handleSaveBook(props.id)}
-          >Save</button>
+            className="btn btn-danger"
+            onClick={() => props.deleteBook(props.id)}
+          >Delete</button>
         </div>
       </Row>
       <Row>
