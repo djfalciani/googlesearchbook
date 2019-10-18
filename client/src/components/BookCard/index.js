@@ -8,11 +8,15 @@ function FriendCard(props) {
       <Row>
         <Col size="md-8">
           <h1><strong>{props.title}</strong></h1>
-          <p><i>Written by {props.authors}</i></p>
+          <p><i>Written by {props.authors.join(", ")}</i></p>
         </Col>
-        <div className="col text-right" style={{ "margin-right": "10px;" }}>
-          <a target="_blank" rel="noopener noreferrer" href={props.link} class="btn btn-light">View</a>
-          <button type="button" class="btn btn-primary">Save</button>
+        <div className="col text-right" style={{ marginRight: "10px"}}>
+          <a target="_blank" rel="noopener noreferrer" href={props.link} className="btn btn-light">View</a>
+          <button 
+            type="button" 
+            className="btn btn-primary"
+            onClick={() => props.handleSaveBook(props.id)}
+          >Save</button>
         </div>
       </Row>
       <Row>
