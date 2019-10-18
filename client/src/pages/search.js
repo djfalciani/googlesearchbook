@@ -1,44 +1,19 @@
 import React, { Component } from "react";
-import DeleteBtn from "../components/DeleteBtn";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
-import { List, ListItem } from "../components/List";
-import { Input, TextArea, FormBtn } from "../components/Form";
+import { List } from "../components/List";
+import { Input, FormBtn } from "../components/Form";
 import Card from "../components/Card";
 import BookCard from "../components/BookCard";
 
 class Search extends Component {
   state = {
-    books: [
-      // {
-      //   id: "asd12323",
-      //   Title: "Test",
-      //   Author: "Author Test"
-      // }
-    ],
+    books: [],
     searchQuery: "",
     cardMsg: "Search Results from Google"
   };
-
-  // componentDidMount() {
-  //   // this.loadBooks();
-  // }
-
-//   loadBooks = () => {
-//     API.getBooks()
-//       .then(res =>
-//         this.setState({ books: res.data, title: "", author: "", synopsis: "" })
-//       )
-//       .catch(err => console.log(err));
-//   };
-
-//   deleteBook = id => {
-//     API.deleteBook(id)
-//       .then(res => this.loadBooks())
-//       .catch(err => console.log(err));
-//   };
 
   getBooks = () => {
     API.getGoogleBooks(this.state.searchQuery)
@@ -56,16 +31,21 @@ class Search extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     this.getBooks();
+  };
+  
+  handleSaveBook = id => {
+    const book = this.state.books.find(book => book.id === id);
     
-    // if (this.state.title && this.state.author) {
-    //   API.saveBook({
-    //     title: this.state.title,
-    //     author: this.state.author,
-    //     synopsis: this.state.synopsis
-    //   })
-    //     .then(res => this.loadBooks())
-    //     .catch(err => console.log(err));
-    // }
+    API.saveBook({
+      googleId: book.id,
+      title: book.volumeInfo.title,
+      // author: book.volumeInfo.authors,
+      author: book.volumeInfo.authors.join(", "),
+      synopsis: book.volumeInfo.description,
+      image: book.volumeInfo.imageLinks.thumbnail,
+      link: book.volumeInfo.infoLink
+    })
+    .catch(err => console.log(err));
   };
 
   render() {
@@ -109,20 +89,13 @@ class Search extends Component {
                         key       = {book.id}
                         id        = {book.id}
                         title     = {book.volumeInfo.title}
-                        authors   = {book.volumeInfo.authors}
+                        authors   = {book.volumeInfo.authors.join(", ")}
                         synopsis  = {book.volumeInfo.description}
                         image     = {book.volumeInfo.imageLinks.thumbnail}
                         link      = {book.volumeInfo.infoLink}
+                        handleSaveBook={this.handleSaveBook}
                       >
                       </BookCard>
-                      // <ListItem key={book.id}>
-                      //   <Link to={"/books/" + book.id}>
-                      //     <strong>
-                      //       {book.volumeInfo.title} by {book.volumeInfo.authors.join(", ")}
-                      //     </strong>
-                      //   </Link>
-                      //   <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                      // </ListItem>
                     ))}
                   </List>
                 ) : (
